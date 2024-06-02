@@ -4,16 +4,6 @@ use meval::Expr;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-extern "C" {
-    fn alert(s: &str);
-}
-
-#[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, romberg-integration!");
-}
-
-#[wasm_bindgen]
 pub enum Error {
     ParseError,
     DoesNotConverge,
