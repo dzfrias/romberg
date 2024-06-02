@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Integral Calculator</title>
+    <script src="./index.js" type="module"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        text-align: center;
+      }
+      h1 {
+        margin-bottom: 20px;
+      }
+      input,
+      button {
+        padding: 10px;
+        margin: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: calc(100% - 40px);
+      }
+      button {
+        cursor: pointer;
+        background-color: #007bff;
+        color: #fff;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+
+      .int-container {
+        display: flex;
+        align-items: center;
+        margin-top: -18px;
+        margin-bottom: -23px;
+      }
+      .func-text {
+        margin-left: -5px;
+        font-size: 18px;
+      }
+      .b-text {
+        margin-left: -750px;
+        font-size: 18px;
+        text-align: left;
+      }
+      .a-text {
+        margin-left: -770px;
+        font-size: 18px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Integral Calculator</h1>
+      <input
+        type="text"
+        id="function"
+        placeholder="Enter function (e.g. x^2)"
+        oninput="updateFunText()"
+      />
+      <input
+        type="text"
+        id="variable"
+        placeholder="Enter variable (e.g. x)"
+        oninput="updateFunText()"
+      />
+
+      <input
+        type="text"
+        id="A"
+        placeholder="Enter the left limit of the integral (a)"
+        oninput="updateAText()"
+      />
+      <input
+        type="text"
+        id="B"
+        placeholder="Enter the right limit of the integral (b)"
+        oninput="updateBText()"
+      />
+
+      <button id="calculate">Calculate Integral</button>
+      <div class="result" id="result"></div>
+      <span class="b-text" id="btext"></span>
+      <div class="int-container">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/5/58/Integral_Sign.svg"
+          alt="Dog"
+          id="dog-image"
+        />
+        <span class="func-text" id="funct"></span>
+      </div>
+      <span class="a-text" id="atext"></span>
+    </div>
+    <script>
+      function updateFunText() {
+        const newText =
+          document.getElementById("function").value +
+          "  d" +
+          document.getElementById("variable").value;
+        document.getElementById("funct").innerText = newText;
+      }
+      function updateAText() {
+        const newText = document.getElementById("A").value;
+        document.getElementById("atext").innerText = newText;
+      }
+      function updateBText() {
+        const newText = document.getElementById("B").value;
+        document.getElementById("btext").innerText = newText;
+      }
+    </script>
+  </body>
+</html>
