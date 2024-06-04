@@ -1,4 +1,8 @@
-import init, { evaluate } from "./dist/romberg_integration.js";
+import init, {
+  integrate,
+  evaluate,
+  set_panic_hook,
+} from "./dist/romberg_integration.js";
 
 const funcInput = document.getElementById("function");
 const aInput = document.getElementById("A");
@@ -8,27 +12,29 @@ const variableInput = document.getElementById("variable");
 document.getElementById("funct").innerText = "d";
 
 await init();
+set_panic_hook();
 
-const calcaulte = document.getElementById("calculate");
-calcaulte.onclick = () => {
-  const a = parseFloat(aInput.value);
-  const b = parseFloat(bInput.value);
-  const variable = variableInput.value;
-  const func = funcInput.value;
+function fallible(func) {
   try {
-    const result = evaluate(func, a, b, variable);
-    console.log(result);
+    return func();
   } catch (e) {
     switch (e) {
       case 0:
-        console.log("parse error");
-        break;
+        throw new Error("parse error");
       case 1:
-        console.log("does not converge");
-        break;
+        throw new Error("does not converge");
       default:
-        console.log("unknown error");
-        break;
+        throw new Error("unknown error");
     }
   }
+}
+
+const calculate = document.getElementById("calculate");
+calculate.onclick = () => {
+  const a = fallible(() => evaluate(aInput.value));
+  const b = fallible(() => evaluate(bInput.value));
+  const variable = variableInput.value;
+  const func = funcInput.value;
+  const result = fallible(() => integrate(func, a, b, variable));
+  console.log(result);
 };

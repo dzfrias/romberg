@@ -1,16 +1,24 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+*/
+export function set_panic_hook(): void;
+/**
 * @param {string} input
 * @param {number} a
 * @param {number} b
 * @param {string} binding
 * @returns {number}
 */
-export function evaluate(input: string, a: number, b: number, binding: string): number;
+export function integrate(input: string, a: number, b: number, binding: string): number;
+/**
+* @param {string} input
+* @returns {number}
+*/
+export function evaluate(input: string): number;
 /**
 */
-export enum Error {
+export enum EvalError {
   ParseError = 0,
   DoesNotConverge = 1,
 }
@@ -19,10 +27,13 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly evaluate: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
+  readonly set_panic_hook: () => void;
+  readonly integrate: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
+  readonly evaluate: (a: number, b: number, c: number) => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;
