@@ -15,7 +15,7 @@ fn riemann_trapezoid(f: &impl Fn(f64) -> f64, a: f64, b: f64, n: u64) -> f64 {
 pub fn integrate(f: impl Fn(f64) -> f64, a: f64, b: f64) -> Option<f64> {
     assert!(b > a);
     let mut matrix = [[0.0; ERROR_PRECISION as usize + 1]; ERROR_PRECISION as usize + 1];
-    matrix[1][1] = riemann_trapezoid(&f, a, b, 1);
+    matrix[1][1] = (f(a) + f(b)) * (b - a) / 2.0;
 
     let mut i = 1;
     let mut error = 1.0;
@@ -24,7 +24,7 @@ pub fn integrate(f: impl Fn(f64) -> f64, a: f64, b: f64) -> Option<f64> {
             return None;
         }
 
-        let n = 2u64.pow(i as u32);
+        let n = 2u64.pow((i - 1) as u32);
         matrix[i as usize + 1][1] = matrix[i as usize][1] / 2.0 + riemann_trapezoid(&f, a, b, n);
         for k in 2..(i + 2) {
             let j = (2 + i - k) as usize;
