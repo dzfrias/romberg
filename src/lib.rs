@@ -25,7 +25,6 @@ pub fn integrate(input: &str, mut a: f64, mut b: f64, binding: &str) -> Result<f
         .parse::<Expr>()
         .map_err(|_err| EvalError::ParseError)?;
     let func = expr.bind(binding).map_err(|_err| EvalError::ParseError)?;
-    console_error_panic_hook::set_once();
     romberg::integrate(func, a, b)
         .map(|x| x * multiply)
         .ok_or(EvalError::DoesNotConverge)
