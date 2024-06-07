@@ -5,11 +5,12 @@ import init, {
 } from "./dist/romberg_integration.js";
 
 const funcInput = document.getElementById("function");
+const funcText = document.getElementById("funct");
 const aInput = document.getElementById("A");
 const bInput = document.getElementById("B");
 const variableInput = document.getElementById("variable");
 
-document.getElementById("funct").innerText = "d";
+funcText.innerText = "d";
 
 await init();
 set_panic_hook();
@@ -31,10 +32,30 @@ function fallible(func) {
 
 const calculate = document.getElementById("calculate");
 calculate.onclick = () => {
-  const a = fallible(() => evaluate(aInput.value));
-  const b = fallible(() => evaluate(bInput.value));
-  const variable = variableInput.value;
-  const func = funcInput.value;
-  const result = fallible(() => integrate(func, a, b, variable));
-  console.log(result);
+  let result;
+  try {
+    const a = evaluate(aInput.value);
+    const b = evaluate(bInput.value);
+    const variable = variableInput.value;
+    const func = funcInput.value;
+    result = integrate(func, a, b, variable);
+  } catch (e) {
+    switch (e) {
+      case 0:
+        result = "parsing error";
+        break;
+      case 1:
+        result = "DNE";
+        break;
+      default:
+        break;
+    }
+  }
+  funcText.innerText =
+    funcInput.value +
+    " d" +
+    document.getElementById("variable").value +
+    "  " +
+    " = " +
+    result;
 };
