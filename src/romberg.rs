@@ -3,13 +3,13 @@ const ERROR_PRECISION: u64 = 20;
 
 #[inline(always)]
 fn riemann_trapezoid(f: &impl Fn(f64) -> f64, a: f64, b: f64, n: u64) -> f64 {
-    let h = (b - a) / n as f64;
+    let h = (b - a) / (2 * n) as f64;
     let mut total = 0.0;
-    for i in 1..n {
-        let x = a + (h * i as f64);
+    for i in 0..n {
+        let x = a + (h * (2 * i + 1) as f64);
         total += 2.0 * f(x)
     }
-    return (f(a) + total + f(b)) * (h / 2.0);
+    return total * (h / 2.0);
 }
 
 pub fn integrate(f: impl Fn(f64) -> f64, a: f64, b: f64) -> Option<f64> {
@@ -25,7 +25,7 @@ pub fn integrate(f: impl Fn(f64) -> f64, a: f64, b: f64) -> Option<f64> {
         }
 
         let n = 2u64.pow(i as u32);
-        matrix[i as usize + 1][1] = riemann_trapezoid(&f, a, b, n);
+        matrix[i as usize + 1][1] = matrix[i as usize][1] / 2.0 + riemann_trapezoid(&f, a, b, n);
         for k in 2..(i + 2) {
             let j = (2 + i - k) as usize;
             matrix[j][k as usize] = ((4u64.pow(k as u32 - 1) as f64
@@ -60,8 +60,8 @@ mod tests {
 
     #[test]
     fn basic_function() {
-        let area = integrate(|x| x.powi(2), 0.0, 3.0).unwrap();
-        assert_in_range!(area, 9.0)
+        let area = integrate(|x| x.powi(2), -2.5, 3.0).unwrap();
+        assert_in_range!(area, 14.2083333333)
     }
 
     #[test]
